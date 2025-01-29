@@ -1,0 +1,320 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}Eco Shop{% endblock %}
+
+{% block content %}
+
+<style>
+  .img-responsive {
+    max-height: 50vh;
+    object-fit: cover;
+  }
+
+  .img-responsive-modal {
+    max-height: 75vh;
+    object-fit: cover;
+  }
+
+  @media only screen and (max-width: 1280px) {
+    .img-responsive {
+      max-height: 50vh;
+      object-fit: cover;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    .img-responsive {
+      max-height: 100%;
+      object-fit: cover;
+    }
+  }
+</style>
+
+<div class="hero-slider">
+  <div class="slider-item th-fullpage hero-area"
+    style="background-image: url('{% static 'images/store/hero1.jpg' %}');">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 text-center">
+          <p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">PRODUCTS</p>
+          <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">Embrace Eco-friendly Living <br> with Recycled Materials.
+            in details.</h1>
+          <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="{% url 'store:shop' %}">Shop
+            Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slider-item th-fullpage hero-area"
+    style="background-image: url('{% static 'images/store/hero5.jpg' %}');">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 text-left">
+          <p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">PRODUCTS</p>
+          <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">Reduce Waste, Reuse, and Recycle <br> with Eco-Friendly Products.
+            in details.</h1>
+          <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="{% url 'store:shop' %}">Shop
+            Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slider-item th-fullpage hero-area"
+    style="background-image: url('{% static 'images/store/hero4.jpg' %}');">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 text-right">
+          <p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">PRODUCTS</p>
+          <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">Join the Movement for a Greener Future <br> with Eco-conscious Choices.
+            in details.</h1>
+          <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn" href="{% url 'store:shop' %}">Shop
+            Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="product-category section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="title text-center">
+          <h2>Eco-Friendly Product Categories</h2>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="category-box">
+          <a href="#!">
+            <img src="{% static 'images/store/cat1.jpg' %}" alt="" />
+            <div class="content">
+              <h3>Clothes Sales</h3>
+              <p>Shop New Season Clothing</p>
+            </div>
+          </a>
+        </div>
+        <div class="category-box">
+          <a href="#!">
+            <img src="{% static 'images/store/cat2.jpg' %}" alt="" />
+            <div class="content">
+              <h3>Smart Casuals</h3>
+              <p>Get Wide Range Selection</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="category-box category-box-2">
+          <a href="#!">
+            <img src="{% static 'images/store/cat4.jpg' %}" alt="" />
+            <div class="content">
+              <h3>Jewellery</h3>
+              <p>Beautifully Crafted, from Sustainable Materials</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="products section bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="title text-center">
+        <h2>Trendy Products</h2>
+      </div>
+    </div>
+    <div class="row">
+      {% if not products %}
+      <div class="col-12">
+        <div class="title text-center">
+          <h4>No eco-friendly products available at the moment. Please check back later!</h4>
+        </div>
+      </div>
+
+      {% else %}
+      {% for product in products %}
+      <div class="col-md-4">
+        <div class="product-item">
+          <div class="product-thumb">
+            <span class="bage">Eco Sale</span>
+            <img class="img-responsive" src="{{ product.image.url }}" alt="product-img" />
+            <div class="preview-meta">
+              <ul>
+                <li>
+                  <span data-toggle="modal" data-target="#product-modal" id="toggle-product"
+                    data-index="{{ product.id }}">
+                    <i class="tf-ion-ios-search-strong"></i>
+                  </span>
+                </li>
+                {% if user.is_authenticated %}
+                <li>
+                  <a data-index="{{ product.id }}" class="add-wish"><i class="tf-ion-ios-heart"></i></a>
+                </li>
+                {% endif %}
+                <li>
+                  <a data-index="{{ product.id }}" class="add-product"><i class="tf-ion-android-cart"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="product-content">
+            <h4><a href="product-single.html">{{ product.title }}</a></h4>
+            <p class="price">${{ product.price }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      <div class="modal product-modal fade" id="product-modal">
+        <div class="modal-dialog " role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                  <div class="modal-image">
+                    <img id="product-image" class="img-responsive-modal"
+                      src="{% static 'images/modal-product.jpg' %}" alt="product-img" />
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                  <div class="product-short-details">
+                    <h2 id="product-title" class="product-title">Eco Pendant, Recycled Material</h2>
+                    <p id="product-price" class="product-price">$200</p>
+                    <p id="product-description" class="product-short-description">
+                      Discover the beauty of sustainability in this unique pendant made from recycled materials.
+                    </p>
+                    <a data-index="" href="" class="btn btn-main add-product">Add To Cart</a>
+                    <a id="absolute-url" href="" class="btn btn-transparent">View Product Details</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.modal -->
+
+    </div>
+  </div>
+</section>
+
+<section class="call-to-action bg-gray section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <div class="title">
+          <h2>SUBSCRIBE TO OUR ECO NEWSLETTER</h2>
+          <p>Stay updated on sustainable living, eco-friendly products, and how to reduce your environmental footprint.</p>
+        </div>
+        <div class="col-lg-6 col-md-offset-3">
+          <div class="input-group subscription-form">
+            <input type="text" class="form-control" placeholder="Enter Your Email Address">
+            <span class="input-group-btn">
+              <button class="btn btn-main" type="button">Subscribe Now!</button>
+            </span>
+          </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+
+      </div>
+    </div> <!-- End row -->
+  </div> <!-- End container -->
+</section> <!-- End section -->
+
+<section class="section instagram-feed">
+  <div class="container">
+    <div class="row">
+      <div class="title">
+        <h2>Visit Us</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <img class="img-responsive" src="{% static 'images/about/1.jpg' %}" alt="product-img" />
+      </div>
+      <div class="col-md-3">
+        <img class="img-responsive" src="{% static 'images/about/2.jpg' %}" alt="product-img" />
+      </div>
+      <div class="col-md-3">
+        <img class="img-responsive" src="{% static 'images/about/3.jpg' %}" alt="product-img" />
+      </div>
+      <div class="col-md-3">
+        <img class="img-responsive" src="{% static 'images/about/5.jpg' %}" alt="product-img" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $(document).on('click', '#toggle-product', function (e) {
+    var prodid = $(this).data('index');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "store:all_product" %}',
+      data: {
+        productid: $(this).data('index'),
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'post'
+      },
+      success: function (json) {
+        var item = json[0];
+        var product = json[0].fields;
+        var URL = 'https://pratamailham.pythonanywhere.com/';
+        document.getElementById("product-title").innerHTML = product.title;
+        document.getElementById("product-price").innerHTML = product.price;
+        document.getElementById("product-description").innerHTML = product.description;
+        $('#product-image').attr('src', URL + 'media/' + product.image);
+        $('#absolute-url').attr('href', URL + 'item/' + product.slug);
+        $('.product-short-details .add-product').attr('data-index', item.pk);
+      },
+      error: function (xhr, errmsg, err) {
+        console.log(err);
+      }
+    });
+  });
+  $(document).on('click', '.add-product', function (e) {
+    e.preventDefault();
+    var prodid = $(this).data('index');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "basket:basket_add" %}',
+      data: {
+        productid: prodid,
+        productqty: 1,
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'post'
+      },
+      success: function (json) {
+        $("#success-load").load("{{ request.path }} .media-load");
+        showSnackbar("Product added to Cart", "#4BCA81");
+      },
+      error: function (xhr, errmsg, err) {
+        console.log(err)
+      }
+    });
+  });
+  $(document).on('click', '.add-wish', function (e) {
+    e.preventDefault();
+    var prodid = $(this).data('index');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "wishlist:add" %}',
+      data: {
+        product_id: prodid,
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'post'
+      },
+      success: function (json) {
+        console.log(json);
+        showSnackbar("Product added to Wish", "#F260B5");
+      },
+      error: function (xhr, errmsg, err) {
+        console.log(err)
+      }
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% for item in basket %}
+{% with product=item.product %}
+<!-- Cart Item -->
+<div class="media">
+    <a class="pull-left" href="{{ product.get_absolute_url }}">
+        <img class="media-object" src="{{ product.image.url }}" alt="image" />
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
+        <div class="cart-price">
+            <span>{{ item.qty }} x</span>
+            <span>{{ item.price }}</span>
+        </div>
+        <h5><strong>${{ product.price }}</strong></h5>
+    </div>
+</div><!-- / Cart Item -->
+{% endwith %}
+{% endfor %}

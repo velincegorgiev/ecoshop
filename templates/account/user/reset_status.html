@@ -1,0 +1,24 @@
+{% extends "../../store/base.html" %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+
+<section class="page-wrapper success-msg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="block text-center">
+                    <i class="tf-ion-android-checkmark-circle"></i>
+                    {% if 'email' in request.get_full_path %}
+                    <h2 class="text-center">Email Reset Send</h2>
+                    <p>Check your email for instructions</p>
+                    {% endif %}
+                    {% if 'complete' in request.get_full_path %}
+                    <h2 class="text-center">Password Reset Success</h2>
+                    <a href="{% url "account:login" %}">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

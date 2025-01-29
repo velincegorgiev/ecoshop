@@ -1,0 +1,100 @@
+{% extends "../../store/base.html" %}
+{% load static %}
+{% block title %}Dashboard - Stationary Shop
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="content">
+          <h1 class="page-name">Dashboard</h1>
+          <ol class="breadcrumb">
+            <li><a href="{% url 'store:all_product' %}">Home</a></li>
+            <li class="active">my account</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="user-dashboard page-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="dashboard-wrapper user-dashboard">
+          <div class="media">
+						<div class="pull-left">
+							<img class="media-object user-img" src="{{ user.profile.url }}" alt="Image">
+						</div>
+						<div class="media-body">
+							<h2 class="media-heading">Welcome {{ user }}</h2>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde, iure, est. Sit mollitia est maxime! Eos
+								cupiditate tempore, tempora omnis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, nihil. </p>
+						</div>
+            <a href="{% url 'account:edit_details' %}" class="btn btn-main btn-icon btn-small"><i
+              class="tf-ion-android-contact"></i> Edit Profile</a>
+            <a href="{% url 'account:logout' %}" class="btn btn-main btn-icon btn-small"><i
+              class="tf-ion-log-out"></i> logout</a>
+            <a href="{% url 'account:delete_user' %}" class="btn btn-main btn-icon btn-small"><i
+              class="tf-ion-android-delete"></i> Delete Account</a>
+					</div>
+
+          <br>
+          <div class="total-order mt-20">
+            <h4>Total Orders</h4>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for order in orders %}
+                  <tr>
+                    <td>#{{ order.id }}</td>
+                    <td>{{ order.created }}</td>
+                    <td>
+                      {% for item in order.items.all %}
+                      <a href="{{item.product.get_absolute_url}}">
+                        <img class="img-fluid" style="width:250px" src="{{item.product.image.url}}" />
+                        <h4>{{ item.product.title}}</h4>
+                      </a>
+                      <p>{{ item.product.price}}</p>
+                      {% endfor %}
+                    </td>
+                    <td>
+                      <ul>
+                        <li>{{order.full_name}}</li>
+                        <li>{{order.address1}}</li>
+                        <li>{{order.address2}}</li>
+                        <li>{{order.post_code}}</li>
+                      </ul>
+                    </td>
+                    <td>
+                      <button class="btn btn-main text-center btn-small" type="button">Problem with order</button>
+                      <br>
+                      <br>
+                      <button class="btn btn-light text-center btn-small" type="button">Leave a review</button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

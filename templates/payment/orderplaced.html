@@ -1,0 +1,19 @@
+{% extends "../store/base.html" %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+
+<section class="page-wrapper success-msg">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="block text-center">
+              <i class="tf-ion-android-checkmark-circle"></i>
+            <h2 class="text-center">Thank you for supporting sustainability!</h2>
+            <p>We appreciate your eco-conscious choice. Your payment has been successfully processed, and your order is on its way. Together, we’re making a positive impact on the planet.</p>
+            <a href="{% url 'account:dashboard' %}" class="btn btn-main mt-20">See Orders</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

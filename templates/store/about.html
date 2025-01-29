@@ -1,0 +1,30 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}About - Eco Shop{% endblock %}
+
+{% block content %}
+<div class="d-flex h-100 text-center">
+    <section class="py-5 text-center container">
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <main class="px-3 col-lg-8 col-md-10 mx-auto pt-5">
+                <h1>About Eco Shop</h1>
+                <p class="lead text-muted">At Eco Shop, we are dedicated to offering high-quality, sustainable products made with eco-friendly materials. Our mission is to reduce waste, support ethical brands, and help our customers make a positive impact on the planet.</p>
+                <p class="lead">
+                    <a href="#mission" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more about our mission</a>
+                </p>
+            </main>
+
+            <section id="mission" class="px-3 pt-5 col-lg-8 col-md-10 mx-auto">
+                <h2>Our Mission</h2>
+                <p class="lead text-muted">Our goal is simple: to make sustainable living accessible to everyone. We carefully curate products that help reduce environmental impact, from clothing made with organic cotton to accessories crafted from recycled materials.</p>
+                <p>We believe in supporting artisans and brands that are committed to fair labor practices and sustainable production. Every item we sell is a step toward a more eco-conscious world.</p>
+            </section>
+
+            <footer class="mt-auto text-white-50">
+                <p>Eco Shop is committed to sustainability. Our website uses eco-friendly practices to help reduce our carbon footprint. Built with love for the planet.</p>
+            </footer>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

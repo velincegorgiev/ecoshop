@@ -1,0 +1,41 @@
+{% extends "../../store/base.html" %}
+{% load static %}
+
+{% block title %}Edit Profile - Stationary Shop{% endblock %}
+{% block content %}
+
+<style>
+    .account-form input {
+        border: 2px solid #ccc;
+        height: calc(2em + .75rem + 2px);
+    }
+
+    .account-form input:focus {
+        border-color: #1497ff;
+        box-shadow: none;
+    }
+</style>
+
+<section class="signin-page account">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="block text-center">
+                    <a class="logo" href="index.html">
+                        <img class="img-logo" src="{% static 'images/logos.png' %}" alt="">
+                    </a>
+                    <h2 class="text-center">Profile Edit</h2>
+                    <form class="text-left clearfix" role="form" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ user_form.as_p }}
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-main text-center">Save Profile</button>
+                        </div>
+                    </form>
+                    <p class="mt-20">Return ?<a href="{% url 'account:dashboard' %}"> Back to dashboard</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}{{ product.title }} - Eco Shop{% endblock %}
+
+{% block content %}
+
+<section class="single-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li class="active">Single Product</li>
+                </ol>
+            </div>
+            <div class="col-md-6">
+                <ol class="product-pagination text-right">
+                    <li><a href=""><i class="tf-ion-ios-arrow-left"></i> Next </a></li>
+                    <li><a href="">Preview <i class="tf-ion-ios-arrow-right"></i></a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mt-20">
+            <div class="col-md-5">
+                <div class="single-product-slider">
+                    <div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+                        <div class='carousel-outer'>
+                            <!-- me art lab slider -->
+                            <div class='carousel-inner '>
+                                <div class='item active'>
+                                    <img src='{{ product.image.url }}' alt=''
+                                        data-zoom-image="{{ product.image.url }}" />
+                                </div>
+                            </div>
+
+                            <!-- sag sol -->
+                            <a class='left carousel-control' href='#carousel-custom' data-slide='prev'>
+                                <i class="tf-ion-ios-arrow-left"></i>
+                            </a>
+                            <a class='right carousel-control' href='#carousel-custom' data-slide='next'>
+                                <i class="tf-ion-ios-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <!-- thumb -->
+                        <ol class='carousel-indicators mCustomScrollbar meartlab'>
+                            <li data-target='#carousel-custom' data-slide-to='0' class='active'>
+                                <img src='{{ product.image.url }}' alt='' />
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="single-product-details">
+                    <h2>{{ product.title }}</h2>
+                    <p class="product-price">$300</p>
+
+                    <p class="product-description mt-20">
+                        {{ product.description }}.
+                    </p>
+                    <p>{{ product.description }}.</p>
+
+                    <div class="product-quantity">
+                        <span>Quantity:</span>
+                        <div class="product-quantity-slider">
+                            <input id="select" type="text" value="1" name="product-quantity">
+                        </div>
+                    </div>
+                    <div class="product-category">
+                        <span>Categories:</span>
+                        <ul>
+                            <li><a href="product-single.html">{{ product.category }}</a></li>
+                        </ul>
+                    </div>
+                    <button id="add-button" value="{{ product.id }}" class="btn btn-main mt-20" type="button">Add to
+                        cart</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="tabCommon mt-20">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#details" aria-expanded="true">Details</a></li>
+                        <li class=""><a data-toggle="tab" href="#reviews" aria-expanded="false">Reviews ({{ product.comments.count }})</a></li>
+                    </ul>
+                    <div class="tab-content patternbg">
+                        <div id="details" class="tab-pane fade active in">
+                            <h4>Product Description</h4>
+                            <p>{{ product.description }}</p>
+                            <p>{{ product.description }}</p>
+                        </div>
+                        <div id="reviews" class="tab-pane fade">
+                            <div class="post-comments">
+                                <ul class="media-list comments-list m-bot-50 clearlist">
+                                    
+                                    <!-- Comment Item start-->
+                                    {% for comment in product.comments.all %}
+                                    <li class="media">
+
+                                        <a class="pull-left" href="#!">
+                                            <img class="media-object comment-avatar" src="{{ comment.author.profile.url }}"
+                                                alt="" width="50" height="50" />
+                                        </a>
+
+                                        <div class="media-body">
+                                            <div class="comment-info">
+                                                <h4 class="comment-author">
+                                                    <a href="#!">{{ comment.author }}</a>
+
+                                                </h4>
+                                                <time datetime="2013-04-06T13:53">{{ comment.created_date }}</time>
+                                                <a class="comment-button" href="#!"><i
+                                                        class="tf-ion-chatbubbles"></i>Reply</a>
+                                            </div>
+
+                                            <p>
+                                                {{ comment.text }}
+                                            </p>
+                                        </div>
+
+                                    </li>
+                                    {% empty %}
+                                    <h4>No Comments yet</h4>
+                                    
+                                    {% endfor %}
+                                    {% if user.is_authenticated %}
+                                    <form class="text-left clearfix" method="post">
+                                        {% csrf_token %}
+
+                                        {% if form.is_valid %}
+                                        <div class="alert alert-success alert-common" role="alert"><i class="tf-ion-thumbsup"></i>
+                                            Details successfully updated!
+                                        </div>
+
+                                        {% endif %}
+
+                                        {% if form.errors %}
+                                        <div class="alert alert-danger alert-common" role="alert"><i class="tf-ion-close-circled"></i>Error: Please try again!</div>
+                                        {% endif %}
+                
+                                        <div class="form-group">
+                                            {{ form.text }}
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-main text-center">Add Comment</button>
+                                        </div>
+                                    </form>
+                                    {% endif %}
+                                    <!-- End Comment Item -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).on('click', '#add-button', function (e) {
+        var value = $('#select').val();
+        if (value > 0) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "basket:basket_add" %}',
+                data: {
+                    productid: $('#add-button').val(),
+                    productqty: value,
+                    csrfmiddlewaretoken: "{{csrf_token}}",
+                    action: 'post'
+                },
+                success: function (json) {
+                    $("#success-load").load("{{ request.path }} .media-load");
+                    showSnackbar("Product added to Cart", "#4BCA81");
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log(err)
+                }
+            });
+        } else {
+            console.log("Please change quantity");
+        }
+    });
+</script>
+
+{% endblock %}

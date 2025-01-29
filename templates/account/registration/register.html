@@ -1,0 +1,59 @@
+{% extends "../../store/base.html" %}
+{% load static %}
+{% block title %}Sign-Up - Eco Shop{% endblock %}
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    <script>
+        window.location.href = '{% url "account:dashboard" %}';
+    </script>
+{% endif %}
+
+<section class="signin-page account">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="block text-center">
+                    <a class="logo" href="index.html">
+                        <img class="img-logo" src="{% static 'images/logos.png' %}" alt="">
+                    </a>
+                    <h2 class="text-center">Create Your Account</h2>
+                    <form class="text-left clearfix" action="{% url 'account:register' %}" method="post">
+                        {% csrf_token %}
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        <div class="alert alert-danger alert-common" role="alert"><i class="tf-ion-close-circled"></i>
+                            {{ field.label }}: {{ field.errors|striptags }}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+
+                        <div class="form-group">
+                            {{ form.user_name }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            <small class="form-text text-muted mb-4 small">
+                                At least 8 characters and 1 digit
+                            </small>
+                            {{ form.password }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.password2 }}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-main text-center">Sign In</button>
+                        </div>
+                    </form>
+                    <p class="mt-20">Already hava an account ?<a href="{% url "account:login" %}"> Login</a></p>
+                    <p><a href="{% url "account:pwdreset" %}"> Forgot your password?</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

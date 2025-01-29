@@ -1,0 +1,111 @@
+{% extends "../store/base.html" %}
+{% load static %}
+{% block title %}My Wishlist - Eco Shop{% endblock %}
+
+{% block content %}
+<style>
+  .img-responsive {
+    max-height: 45vh;
+    object-fit: cover;
+  }
+
+  @media only screen and (max-width: 1280px) {
+    .img-responsive {
+      max-height: 50vh;
+      object-fit: cover;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    .img-responsive {
+      max-height: 100%;
+      object-fit: cover;
+    }
+  }
+</style>
+
+<section class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="content">
+          <h1 class="page-name">Wishlist</h1>
+          <ol class="breadcrumb">
+            <li><a href="{% url 'store:all_product' %}">Home</a></li>
+            <li class="active">my wishlist</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="row">
+    <div class="row">
+      <div class="title text-center">
+        <h2>Wishlist</h2>
+      </div>
+    </div>
+    {% if not wishlist %}
+    <div class="row">
+      <div class="title text-center">
+        <h4>My Wishlist</h4>
+      </div>
+    </div>
+
+    {% else %}
+    {% for wish in wishlist %}
+    <div class="col-md-3 wishlist-item" data-index="{{ wish.id }}">
+      <div class="product-item">
+        <div class="product-thumb">
+          <span class="bage">Sale</span>
+          <img class="img-responsive" src="{{ wish.product.image.url }}" alt="product-img" />
+          <div class="preview-meta">
+            <ul>
+              <li>
+                <a href="{{ wish.product.get_absolute_url }}"><i class="tf-ion-android-folder"></i></a>
+              </li>
+              <li>
+                <a data-index="{{ wish.id }}" class="delete-wish"><i class="tf-ion-ios-trash"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="product-content">
+          <h4><a href="product-single.html">{{ wish.product.title }}</a></h4>
+          <p class="price">${{ wish.product.price }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  $(document).on('click', '.delete-wish', function (e) {
+    e.preventDefault();
+    var wishid = $(this).data('index');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "wishlist:delete_wish" %}',
+      data: {
+        wish_id: wishid,
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'post'
+      },
+      success: function (json) {
+        console.log(json);
+        $('.wishlist-item[data-index="' + wishid + '"]').remove();
+        showSnackbar("Wish Removed", "#EF1700");
+      },
+      error: function (xhr, errmsg, err) {
+        console.log(err);
+      }
+    });
+  });
+</script>
+{% endblock %}

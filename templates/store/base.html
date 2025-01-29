@@ -1,0 +1,231 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>{% block title %}Eco Store{% endblock %}</title>
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Construction Html5 Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="author" content="Themefisher">
+    <meta name="generator" content="Themefisher Constra HTML Template v1.0">
+
+    <!-- {% static 'css/style.css '%} -->
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}" />
+
+    <!-- Themefisher Icon font -->
+    <link rel="stylesheet" href="{% static 'plugins/themefisher-font/style.css' %}">
+    <!-- bootstrap.min css -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+
+    <!-- Animate css -->
+    <link rel="stylesheet" href="{% static 'plugins/animate/animate.css' %}">
+    <!-- Slick Carousel -->
+    <link rel="stylesheet" href="{% static 'plugins/slick/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/slick/slick-theme.css' %}">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% block stylesheet %}{% endblock %}">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+
+<style>
+    .img-logo {
+        width: 14rem;
+    }
+</style>
+
+<body id="body">
+    <!-- Navigation-->
+    <!-- Start Top Header Bar -->
+    <section class="top-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-xs-12 col-sm-4">
+                    <div class="contact-number">
+                        <i class="tf-ion-ios-telephone"></i>
+                        <span>075-123-456</span>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12 col-sm-4">
+                    <!-- Site Logo -->
+                    <div class="logo text-center">
+                        <a href="{% url 'store:all_product' %}">
+                            <!-- replace logo here -->
+                            <img class="img-logo" src="{% static 'images/logos.png' %}">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12 col-sm-4">
+                    <!-- Cart -->
+                    <ul class="top-menu text-right list-inline">
+                        <li class="dropdown cart-nav dropdown-slide">
+                            <a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i
+                                    class="tf-ion-android-cart"></i>Cart</a>
+                            <div class="dropdown-menu cart-dropdown" id="success-load">
+                                <div class="media-load">
+                                    {% for item in basket %}
+                                    {% with product=item.product %}
+                                    <!-- Cart Item -->
+                                    <div class="media" data-index="{{ product.id }}">
+                                        <a class="pull-left" href="{{ product.get_absolute_url }}">
+                                            <img class="media-object" src="{{ product.image.url }}" alt="image" />
+                                        </a>
+                                        <div class="media-body">
+                                            <h4 class="media-heading"><a
+                                                    href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
+                                            <div class="cart-price">
+                                                <span>{{ item.qty }} x</span>
+                                                <span>{{ item.price }}</span>
+                                            </div>
+                                            <h5><strong>${{ product.price }}</strong></h5>
+                                        </div>
+                                    </div><!-- / Cart Item -->
+                                    {% endwith %}
+                                    {% endfor %}
+                                    <div class="cart-summary">
+                                        <span>Total</span>
+                                        <span id="total-price">${{ basket_total_price }}</span>
+                                    </div>
+                                    <ul class="text-center cart-buttons">
+                                        <li><a href="{% url 'basket:basket_summary' %}" class="btn btn-small">View
+                                                Cart</a></li>
+                                        <li><a href="{% url 'payment:basket_view' %}"
+                                                class="btn btn-small btn-solid-border">Checkout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </li><!-- / Cart -->
+
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'account:dashboard' %}" class="btn btn-main btn-icon btn-small"><i
+                                class="tf-ion-android-contact"></i> Dashboard</a>
+
+                        {% else %}
+                        <a href="{% url 'account:login' %}" class="btn btn-main btn-small">Sign In</a>
+
+                        {% endif %}
+
+                    </ul><!-- / .nav .navbar-nav .navbar-right -->
+                </div>
+            </div>
+        </div>
+    </section><!-- End Top Header Bar -->
+
+
+    <!-- Main Menu Section -->
+    <section class="menu">
+        <nav class="navbar navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <h2 class="menu-title">Main Menu</h2>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div><!-- / .navbar-header -->
+
+                <!-- Navbar Links -->
+                <div id="navbar" class="navbar-collapse collapse text-center">
+                    <ul class="nav navbar-nav">
+
+                        <!-- Home -->
+                        <li class="dropdown ">
+                            <a href="{% url 'store:all_product' %}">Home</a>
+                        </li><!-- / Home -->
+
+                        {% if user.is_authenticated %}
+                        <li class="dropdown ">
+                            <a href="{% url 'wishlist:list' %}">My Wishlist</a>
+                        </li><!-- / Home -->
+                        {% endif %}
+
+                        <!-- Home -->
+                        <li class="dropdown ">
+                            <a href="{% url 'store:shop' %}">Shop</a>
+                        </li><!-- / Home -->
+
+                        <!-- Shop -->
+                        <li class="dropdown dropdown-slide">
+                            <a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                                data-delay="350" role="button" aria-haspopup="true" aria-expanded="false">Clothes <span
+                                    class="tf-ion-ios-arrow-down"></span></a>
+                            <ul class="dropdown-menu">
+                                {% for c in categories %}
+                                <li><a href="{{ c.get_absolute_url }}">{{ c.name|title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li><!-- / Blog -->
+
+                        <!-- Blog -->
+<!--                        <li class="dropdown dropdown-slide">-->
+<!--                            <a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"-->
+<!--                                data-delay="350" role="button" aria-haspopup="true" aria-expanded="false">Accessories <span-->
+<!--                                    class="tf-ion-ios-arrow-down"></span></a>-->
+<!--                            <ul class="dropdown-menu">-->
+<!--                                <li><a href="#">Category 1</a></li>-->
+<!--                                <li><a href="#">Category 2</a></li>-->
+<!--                                <li><a href="#">Category 3</a></li>-->
+<!--                            </ul>-->
+<!--                        </li>&lt;!&ndash; / Blog &ndash;&gt;-->
+
+                        <!-- Blog -->
+<!--                        <li class="dropdown dropdown-slide">-->
+<!--                            <a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"-->
+<!--                                data-delay="350" role="button" aria-haspopup="true" aria-expanded="false">Jewellery <span-->
+<!--                                    class="tf-ion-ios-arrow-down"></span></a>-->
+<!--                            <ul class="dropdown-menu">-->
+<!--                                <li><a href="#">Category 1</a></li>-->
+<!--                                <li><a href="#">Category 2</a></li>-->
+<!--                                <li><a href="#">Category 3</a></li>-->
+<!--                            </ul>-->
+<!--                        </li>&lt;!&ndash; / Blog &ndash;&gt;-->
+                        
+                    </ul><!-- / .nav .navbar-nav -->
+
+                </div>
+                <!--/.navbar-collapse -->
+            </div><!-- / .container -->
+        </nav>
+    </section>
+    <!-- Content-->
+    <div id="content">{% block content %} {% endblock %}</div>
+
+</body>
+
+<script src="{% static 'js/snackbar.js' %}" data-rel-js></script>
+<!-- Bootstrap 3.1 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- Bootstrap Touchpin -->
+<script src="{% static 'plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}"></script>
+<!-- Instagram Feed Js -->
+<script src="{% static 'plugins/instafeed/instafeed.min.js' %}"></script>
+<!-- Video Lightbox Plugin -->
+<script src="{% static 'plugins/ekko-lightbox/dist/ekko-lightbox.min.js' %}"></script>
+<!-- Count Down Js -->
+<script src="{% static 'plugins/syo-timer/build/jquery.syotimer.min.js' %}"></script>
+
+<!-- slick Carousel -->
+<script src="{% static 'plugins/slick/slick.min.js' %}"></script>
+<script src="{% static 'plugins/slick/slick-animation.min.js' %}"></script>
+
+<!-- Main Js File -->
+<script src="{% static 'js/script.js' %}"></script>
+
+</html>

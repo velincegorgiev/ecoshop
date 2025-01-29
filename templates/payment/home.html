@@ -1,0 +1,113 @@
+{% extends "../store/base.html" %}
+{% load static %}
+{% block title %}Payment - Eco Shop{% endblock %}
+{% block content %}
+
+<section class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="content">
+          <h1 class="page-name">Checkout</h1>
+          <ol class="breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">checkout</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="page-wrapper">
+  <div class="checkout shopping">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div id="payment-form" class="block billing-details">
+            <h4 class="widget-title">Billing Details</h4>
+            <div id="card-errors" class="a" role="alert"></div>
+            <form class="checkout-form">
+              <div class="form-group">
+                <label for="full_name">Name</label>
+                <input type="text" class="form-control" id="custName" placeholder="" required>
+              </div>
+              <div class="form-group">
+                <label for="user_address">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="">
+              </div>
+              <div class="form-group">
+                <label for="user_address">Address</label>
+                <input type="text" class="form-control" id="custAdd" placeholder="" required>
+              </div>
+              <div class="form-group">
+                <label for="user_address">Address 2</label>
+                <input type="text" class="form-control" id="custAdd2" placeholder="">
+              </div>
+              <div class="form-group">
+                <label for="country" class="form-label">Country</label>
+                <input type="text" class="form-control" id="country" placeholder="" required>
+              </div>
+              <div class="checkout-country-code clearfix">
+                <div class="form-group">
+                  <label for="state" class="form-label">State</label>
+                  <input type="text" class="form-control" id="state" placeholder="" required>
+                </div>
+                <div class="form-group">
+                  <label for="Postcode" class="form-label">Postcode</label>
+                  <input type="text" class="form-control" id="postCode" placeholder="" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="card-element">Credit or debit card</label>
+                <div id="card-element" class="form-control form-control-payment">
+                  <!-- Payment elements will appear here -->
+                </div>
+              </div>
+              <button id="submit" class="btn btn-main mt-20" data-secret="{{ client_secret }}">Place Order</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="product-checkout-details">
+            <div class="block">
+              <h4 class="widget-title">Order Summary</h4>
+              {% for item in basket %}
+              {% with product=item.product %}
+              <div class="media product-card">
+                <a class="pull-left" href="{{ product.get_absolute_url }}">
+                  <img class="media-object" src="{{ product.image.url }}" alt="Image" />
+                </a>
+                <div class="media-body">
+                  <h4 class="media-heading"><a href="{{ product.get_absolute_url }}">{{ product.title}}</a></h4>
+                  <p class="price">{{ item.qty }} x ${{ product.price }}</p>
+                  <span class="remove">Remove</span>
+                </div>
+              </div>
+              {% endwith %}
+              {% endfor %}
+              <ul class="summary-prices">
+                <li>
+                  <span>Shipping:</span>
+                  <span>Free</span>
+                </li>
+              </ul>
+              <div class="summary-total">
+                <span>Total</span>
+                <span>${{ basket_total_price }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var CSRF_TOKEN = '{{ csrf_token }}';
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'js/payments.js' %}" data-rel-js></script>
+
+{% endblock %}
